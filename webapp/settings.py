@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-$4^xbq9od)=m0=ra_7wk-=(@+g9mw4l(r1($+8h#8ayg_p#n4a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cloudproject-bcd.herokuapp.com']
+ALLOWED_HOSTS = ['cloud-project-1-app-2024-38bf91890e64.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -133,4 +133,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Firebase Configuration
+FIREBASE_CONFIG = {
+    "apiKey": os.environ.get('FIREBASE_API_KEY'),
+    "authDomain": os.environ.get('FIREBASE_AUTH_DOMAIN'),
+    "projectId": os.environ.get('FIREBASE_PROJECT_ID'),
+    "storageBucket": os.environ.get('FIREBASE_STORAGE_BUCKET'),
+    "messagingSenderId": os.environ.get('FIREBASE_MESSAGING_SENDER_ID'),
+    "appId": os.environ.get('FIREBASE_APP_ID')
+}
 
