@@ -7,9 +7,17 @@ from club import datahandler as clubdata
 from django.http import *
 import traceback
 import pyrebase
+from django.conf import settings
 
-#enter the firebase config api keys
+# Firebase configuration
 firebaseConfig = {
+    "apiKey": "AIzaSyDUEVU5icElBw_PR6xQ5XEXsy56vOL0H3g",
+    "authDomain": "cloud-project-1-27e81.firebaseapp.com",
+    "projectId": "cloud-project-1-27e81",
+    "storageBucket": "cloud-project-1-27e81.firebasestorage.app",
+    "messagingSenderId": "850810687393",
+    "appId": "1:850810687393:web:c3c448975108610c3345e0",
+    "measurementId": "G-Z40ZLL0MMJ"
 }
 
 firebase = pyrebase.initialize_app(firebaseConfig)
