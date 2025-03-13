@@ -11,15 +11,7 @@ from django.conf import settings
 import os
 
 # Firebase configuration
-firebaseConfig = {
-    "apiKey": os.environ.get('FIREBASE_API_KEY', "AIzaSyDUEVU5icElBw_PR6xQ5XEXsy56vOL0H3g"),
-    "authDomain": os.environ.get('FIREBASE_AUTH_DOMAIN', "cloud-project-1-27e81.firebaseapp.com"),
-    "projectId": os.environ.get('FIREBASE_PROJECT_ID', "cloud-project-1-27e81"),
-    "storageBucket": os.environ.get('FIREBASE_STORAGE_BUCKET', "cloud-project-1-27e81.firebasestorage.app"),
-    "messagingSenderId": os.environ.get('FIREBASE_MESSAGING_SENDER_ID', "850810687393"),
-    "appId": os.environ.get('FIREBASE_APP_ID', "1:850810687393:web:c3c448975108610c3345e0"),
-    "measurementId": os.environ.get('FIREBASE_MEASUREMENT_ID', "G-Z40ZLL0MMJ")
-}
+firebaseConfig = settings.FIREBASE_CONFIG
 
 try:
     firebase = pyrebase.initialize_app(firebaseConfig)
