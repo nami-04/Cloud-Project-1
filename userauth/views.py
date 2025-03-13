@@ -8,20 +8,25 @@ from django.http import *
 import traceback
 import pyrebase
 from django.conf import settings
+import os
 
 # Firebase configuration
 firebaseConfig = {
-    "apiKey": "AIzaSyDUEVU5icElBw_PR6xQ5XEXsy56vOL0H3g",
-    "authDomain": "cloud-project-1-27e81.firebaseapp.com",
-    "projectId": "cloud-project-1-27e81",
-    "storageBucket": "cloud-project-1-27e81.firebasestorage.app",
-    "messagingSenderId": "850810687393",
-    "appId": "1:850810687393:web:c3c448975108610c3345e0",
-    "measurementId": "G-Z40ZLL0MMJ"
+    "apiKey": os.environ.get('FIREBASE_API_KEY', "AIzaSyDUEVU5icElBw_PR6xQ5XEXsy56vOL0H3g"),
+    "authDomain": os.environ.get('FIREBASE_AUTH_DOMAIN', "cloud-project-1-27e81.firebaseapp.com"),
+    "projectId": os.environ.get('FIREBASE_PROJECT_ID', "cloud-project-1-27e81"),
+    "storageBucket": os.environ.get('FIREBASE_STORAGE_BUCKET', "cloud-project-1-27e81.firebasestorage.app"),
+    "messagingSenderId": os.environ.get('FIREBASE_MESSAGING_SENDER_ID', "850810687393"),
+    "appId": os.environ.get('FIREBASE_APP_ID', "1:850810687393:web:c3c448975108610c3345e0"),
+    "measurementId": os.environ.get('FIREBASE_MEASUREMENT_ID', "G-Z40ZLL0MMJ")
 }
 
-firebase = pyrebase.initialize_app(firebaseConfig)
-auth = firebase.auth()
+try:
+    firebase = pyrebase.initialize_app(firebaseConfig)
+    auth = firebase.auth()
+except Exception as e:
+    print(f"Firebase initialization error: {str(e)}")
+    auth = None
 
 def loginuser(request):
     if request.user.is_authenticated:
@@ -39,6 +44,8 @@ def loginuser(request):
         except:
             urltoredirect = None
         try:
+            if auth is None:
+                raise Exception("Firebase authentication not initialized")
             user = auth.sign_in_with_email_and_password(email , password)
             user = authenticate(username=user['localId'], password="deZE%KYzH5jVBbHN")
             if user is not None:
@@ -54,7 +61,8 @@ def loginuser(request):
                         return redirect("/club")
             else:
                 raise Exception
-        except:
+        except Exception as e:
+            print(f"Login error: {str(e)}")
             traceback.print_exc()
             return render(request, 'login.html' , {"alert" : 1})
     
