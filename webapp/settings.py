@@ -20,13 +20,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$4^xbq9od)=m0=ra_7wk-=(@+g9mw4l(r1($+8h#8ayg_p#n4a'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['cloud-project-1-app-2024-38bf91890e64.herokuapp.com', 'localhost', '127.0.0.1']
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-$4^xbq9od)=m0=ra_7wk-=(@+g9mw4l(r1($+8h#8ayg_p#n4a')
 
 
 # Application definition
@@ -141,6 +141,7 @@ FIREBASE_CONFIG = {
     "projectId": os.environ.get('FIREBASE_PROJECT_ID'),
     "storageBucket": os.environ.get('FIREBASE_STORAGE_BUCKET'),
     "messagingSenderId": os.environ.get('FIREBASE_MESSAGING_SENDER_ID'),
-    "appId": os.environ.get('FIREBASE_APP_ID')
+    "appId": os.environ.get('FIREBASE_APP_ID'),
+    "measurementId": os.environ.get('FIREBASE_MEASUREMENT_ID')
 }
 
