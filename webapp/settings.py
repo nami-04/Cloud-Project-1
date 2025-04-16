@@ -91,11 +91,14 @@ WSGI_APPLICATION = 'webapp.wsgi.application'
 # Use PostgreSQL if DATABASE_URL is set, otherwise use SQLite
 if os.environ.get('DATABASE_URL'):
     DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
-            conn_max_age=600,
-            ssl_require=True
-        )
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('PGDATABASE'),
+            'USER': os.environ.get('PGUSER'),
+            'PASSWORD': os.environ.get('PGPASSWORD'),
+            'HOST': os.environ.get('PGHOST'),
+            'PORT': os.environ.get('PGPORT'),
+        }
     }
 else:
     DATABASES = {
