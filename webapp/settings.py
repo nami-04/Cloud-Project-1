@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,10 +28,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['cloud-project-1-app-2024-38bf91890e64.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-$4^xbq9od)=m0=ra_7wk-=(@+g9mw4l(r1($+8h#8ayg_p#n4a')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-$4^xbq9od)=m0=ra_7wk-=(@+g9mw4l(r1($+8h#8ayg_p#n4a')
 
 
 # Application definition
@@ -80,12 +85,21 @@ WSGI_APPLICATION = 'webapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Use PostgreSQL if DATABASE_URL is set, otherwise use SQLite
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600
+        )
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -136,12 +150,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Firebase Configuration
 FIREBASE_CONFIG = {
-    "apiKey": os.environ.get('FIREBASE_API_KEY'),
-    "authDomain": os.environ.get('FIREBASE_AUTH_DOMAIN'),
-    "projectId": os.environ.get('FIREBASE_PROJECT_ID'),
-    "storageBucket": os.environ.get('FIREBASE_STORAGE_BUCKET'),
-    "messagingSenderId": os.environ.get('FIREBASE_MESSAGING_SENDER_ID'),
-    "appId": os.environ.get('FIREBASE_APP_ID'),
-    "measurementId": os.environ.get('FIREBASE_MEASUREMENT_ID')
+    "apiKey": "AIzaSyDUEVU5icElBw_PR6xQ5XEXsy56vOL0H3g",
+    "authDomain": "cloud-project-1-27e81.firebaseapp.com",
+    "databaseURL": "https://cloudproject-bcd7008-default-rtdb.firebaseio.com",
+    "projectId": "cloud-project-1-27e81",
+    "storageBucket": "cloud-project-1-27e81.appspot.com",
+    "messagingSenderId": "850810687393",
+    "appId": "1:850810687393:web:c3c448975108610c3345e0",
+    "measurementId": "G-Z40ZLL0MMJ"
 }
+
+# MongoDB Configuration
+MONGODB_URI = os.environ.get('MONGODB_URI', "mongodb+srv://Namitha:NamiHarshu%40866@cluster0.edzfz.mongodb.net/CloudProject?retryWrites=true&w=majority")
 

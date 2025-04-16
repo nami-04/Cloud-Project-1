@@ -4,6 +4,7 @@
 *.pyc
 __pycache__
 db.sqlite3
+db.sqlite3-journal
 media
 
 # Backup files # 
@@ -12,6 +13,8 @@ media
 # Python # 
 *.py[cod] 
 *$py.class 
+*.so
+.Python
 
 # Distribution / packaging 
 .Python build/ 
@@ -83,3 +86,33 @@ GitHub.sublime-settings
 !.vscode/launch.json 
 !.vscode/extensions.json 
 .history
+
+# Environment variables
+.env
+.venv
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Firebase
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+
+# Node
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Render
+.render/

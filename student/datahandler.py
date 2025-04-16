@@ -3,14 +3,14 @@ from student.models import Student
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 import pyrebase
+from django.conf import settings
 
-firebaseConfig = {
-}
+firebaseConfig = settings.FIREBASE_CONFIG
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
-client = MongoClient("")
+client = MongoClient(settings.MONGODB_URI)
 db = client.get_database("CloudProject")
 conn = db.Student
 

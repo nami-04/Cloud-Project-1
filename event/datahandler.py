@@ -6,8 +6,9 @@ from admintask.models import subscription
 from admintask.models import registration
 from student import datahandler as studata
 import traceback
+from django.conf import settings
 
-client = MongoClient("")
+client = MongoClient(settings.MONGODB_URI)
 db = client.get_database("CloudProject")
 conn = db.Events
 

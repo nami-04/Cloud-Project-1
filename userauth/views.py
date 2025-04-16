@@ -25,40 +25,47 @@ def loginuser(request):
         try:
             return redirect(request.GET.get('next'))
         except:
-            traceback.print_exc()
             return redirect("/")
 
     if request.method == 'POST':
         email = request.POST['username']
         password = request.POST['password']
+        login_type = request.POST.get('login_type', 'user')
+        
         try:
-            urltoredirect = request.POST['redirecturl']
-        except:
-            urltoredirect = None
-        try:
-            if auth is None:
-                raise Exception("Firebase authentication not initialized")
-            user = auth.sign_in_with_email_and_password(email , password)
-            user = authenticate(username=user['localId'], password="deZE%KYzH5jVBbHN")
-            if user is not None:
-                login(request, user)
-                if not(urltoredirect is None):
-                    return redirect(urltoredirect)
-                else:
-                    if user.groups.filter(name = "Studentgrp").exists():
-                        return redirect("/student")
-                    elif user.groups.filter(name = "Techgrp").exists():
-                        return redirect("/admin")
-                    else:
+            if login_type == 'admin':
+                # For admin login, try Django's authentication first
+                if email == "admin@example.com":
+                    # Use 'admin' as username instead of email for authentication
+                    user = authenticate(username='admin', password=password)
+                    if user is not None and user.groups.filter(name="Techgrp").exists():
+                        login(request, user)
                         return redirect("/club")
+                    else:
+                        return render(request, 'login.html', {'alert': 1, 'error': 'Invalid admin credentials'})
+                else:
+                    return render(request, 'login.html', {'alert': 1, 'error': 'Invalid admin email'})
             else:
-                raise Exception
+                # Regular user login with Firebase
+                if auth is None:
+                    return render(request, 'login.html', {'alert': 1})
+                    
+                # Try Firebase authentication for regular users
+                user = auth.sign_in_with_email_and_password(email, password)
+                user = authenticate(username=user['localId'], password="deZE%KYzH5jVBbHN")
+                
+                if user is not None:
+                    login(request, user)
+                    if user.groups.filter(name="Studentgrp").exists():
+                        return redirect("/student")
+                    else:
+                        return render(request, 'login.html', {'alert': 1, 'error': 'You do not have student access'})
+                else:
+                    return render(request, 'login.html', {'alert': 1})
         except Exception as e:
             print(f"Login error: {str(e)}")
-            traceback.print_exc()
-            return render(request, 'login.html' , {"alert" : 1})
-    
-    return render(request, 'login.html' , {"alert" : 0})
+            return render(request, 'login.html', {'alert': 1})
+    return render(request, 'login.html')
 
 
 def signup(request):
@@ -148,3 +155,17 @@ def loadprofile(request):
     
     else:
         return HttpResponseForbidden()
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            if auth is None:
+                return render(request, 'forgot_password.html', {'alert': 'Firebase not initialized'})
+            auth.send_password_reset_email(email)
+            return render(request, 'forgot_password.html', {'success': True})
+        except Exception as e:
+            print(f"Password reset error: {str(e)}")
+            return render(request, 'forgot_password.html', {'alert': 'Invalid email address'})
+    return render(request, 'forgot_password.html')

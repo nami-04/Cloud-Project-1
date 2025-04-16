@@ -1,6 +1,6 @@
 import pika
 def uploadQueueClub(studentId):
-    url = #enter url
+    url = "amqps://namitha:NamiHarshu%40866@b-4a8f3d89-c5e3-4c5b-b1a1-a3c3b0c0c0c0.mq.us-east-1.amazonaws.com:5671"
     params = pika.URLParameters(url)
     connection = pika.BlockingConnection(params)
     channel = connection.channel() 
@@ -9,7 +9,7 @@ def uploadQueueClub(studentId):
     connection.close()
 
 def uploadQueueEvent(studentId):
-    url = #enter url
+    url = "amqps://namitha:NamiHarshu%40866@b-4a8f3d89-c5e3-4c5b-b1a1-a3c3b0c0c0c0.mq.us-east-1.amazonaws.com:5671"
     params = pika.URLParameters(url)
     connection = pika.BlockingConnection(params)
     channel = connection.channel() 

@@ -7,23 +7,15 @@ from django.contrib.auth.models import User
 import uuid
 import pyrebase
 import traceback
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import auth as main_auth
-from event import datahandler as evedata
+from django.conf import settings
 
-cred = credentials.Certificate("firebaseadmin.json")
-firebase_admin.initialize_app(cred)
-
-client = MongoClient("")
-db = client.get_database("CloudProject")
-conn = db.Clubs
-
-
-firebaseConfig = {
-}
+firebaseConfig = settings.FIREBASE_CONFIG
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
+
+client = MongoClient(settings.MONGODB_URI)
+db = client.get_database("CloudProject")
+conn = db.Clubs
 
 def createClub(ClubData):
     password = str(uuid.uuid4())
@@ -53,9 +45,7 @@ def createClub(ClubData):
 
 def deleteClub(id):
     try:    
-        main_auth.delete_user(id)
         conn.delete_one({"clubId" : id})
-        evedata.deleteEventforClub(id)
         User.objects.filter(username=id).delete()
         Club.objects.filter(clubId=id).delete()
         try:

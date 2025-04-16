@@ -6,58 +6,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Signup</title>
+    <title>Sign In</title>
     <!-- Font Icon -->
     <link rel="stylesheet" href= {%static 'fonts/material-icon/css/material-design-iconic-font.min.css' %}>
     <!-- Main css -->
     <link rel="stylesheet" href= {%static 'css/style.css'%}>
+    <style>
+        .signup {
+            padding: 50px 0;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .signup-content {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 1000px;
+            margin: auto;
+            display: flex;
+            align-items: stretch;
+        }
+        .signin-form {
+            padding: 40px;
+            width: 50%;
+        }
+        .signin-image {
+            width: 50%;
+            padding: 40px;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-title {
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+        .form-group label {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        .form-submit {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .form-submit:hover {
+            background: #45a049;
+        }
+        .alert {
+            margin-bottom: 25px;
+        }
+        .signup-image-link {
+            color: #4CAF50;
+            text-decoration: none;
+            display: block;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .signup-image-link:hover {
+            text-decoration: underline;
+        }
+        .login-type-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+        .login-type-btn {
+            padding: 8px 20px;
+            border: 2px solid #4CAF50;
+            background: transparent;
+            color: #4CAF50;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .login-type-btn.active {
+            background: #4CAF50;
+            color: white;
+        }
+        .signin-image img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
     <section class="signup">
-            <div class = "container-fluid" style = "height : 0.5vmax" ></div>
-            {% if alert == 1%}
-            <div class = "container" style = "height : 50px; background-color:#f8f8f8;">
-                <div class = "row justify-content-center p-3">
-                    <h4 style = "color : #DC143C !important">Invalid Username or Password</h4>
+        <div class="container">
+            <div class="signup-content">
+                <div class="signin-form">
+                    <h2 class="form-title text-center">Sign In</h2>
+                    {% if alert == 1%}
+                        <div class="alert alert-danger text-center" role="alert">
+                            {% if error %}
+                                {{ error }}
+                            {% else %}
+                                Invalid username or password
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    <div class="login-type-toggle">
+                        <button type="button" class="login-type-btn active" onclick="toggleLoginType('user')">User Login</button>
+                        <button type="button" class="login-type-btn" onclick="toggleLoginType('admin')">Admin Login</button>
+                    </div>
+
+                    <form method="POST" class="register-form" id="login-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="login_type" id="login_type" value="user">
+                        
+                        <div class="form-group">
+                            <label for="email"><i class="zmdi zmdi-email"></i></label>
+                            <input type="text" name="username" id="username" placeholder="Username or Email" required/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                            <input type="password" name="password" id="password" placeholder="Password" required/>
+                        </div>
+
+                        <div class="form-group form-button">
+                            <input type="submit" name="login" id="signup" class="form-submit" value="Login"/>
+                        </div>
+
+                        <div class="text-center">
+                            <a href="/user/forgot-password/" class="signup-image-link">Forgot Password?</a>
+                            <a href="/user/signup" class="signup-image-link">I am not a member</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="signin-image">
+                    <img src="{% static 'img/loginimg.jpg' %}" alt="sign in illustration">
                 </div>
             </div>
-            {% endif %}
-            
-            <div class="container">
-                <div class="signup-content">
-                    <div class="signup-form">
+        </div>
+    </section>
 
-                        <h2 class="form-title">Sign In</h2>
-
-                        <form method="POST" class="register-form" id="register-form">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                <input type="email" name="username" id="username" placeholder="Your Email" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="password" id="password" placeholder="Password" required/>
-                            </div>
-
-                            <input type = "hidden" value = {{ request.GET.next }} name = "redirecturl">
-
-                            <div class="form-group form-button">
-                                <input type="submit" name="login" id="signup" class="form-submit" value="login"/>
-                            </div>
-
-                        </form>
-                        
-                        
-                    </div>
-                    <div class="signup-image">
-                        <figure><img src= "{%static 'img/loginimg.jpg'%}" alt="sing up image"></figure>
-                        <a href="/user/signup" class="signup-image-link">I am not a member</a>
-                    </div>
-                </div>
-            </div>
-            
-        </section>
-    </body>
+    <script>
+        function toggleLoginType(type) {
+            document.getElementById('login_type').value = type;
+            const buttons = document.querySelectorAll('.login-type-btn');
+            buttons.forEach(btn => {
+                if(btn.textContent.toLowerCase().includes(type)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
 </html>

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: cloud-project-1
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn webapp.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: DJANGO_SETTINGS_MODULE
+        value: webapp.settings
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False 
