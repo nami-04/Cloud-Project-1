@@ -57,6 +57,5 @@ services:
   - type: pserv
     name: cloud-project-1-database
     env: docker
-    startCommand: postgres -D /var/lib/postgresql/data
     region: oregon
     plan: free
