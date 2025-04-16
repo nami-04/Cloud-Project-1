@@ -51,7 +51,6 @@ services:
     autoDeploy: true
     plan: free
 
-  - type: pserv
+  - type: postgres
     name: Cloud-Project-1-Database
-    env: docker
     plan: free 
