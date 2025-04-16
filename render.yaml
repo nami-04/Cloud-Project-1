@@ -51,7 +51,7 @@ services:
     autoDeploy: true
     plan: free
 
-  - type: pserv
+  - type: postgres
     name: cloud-project-1-database
-    env: postgres
-    plan: free 
+    plan: free
+    startCommand: postgres -D /var/lib/postgresql/data 
