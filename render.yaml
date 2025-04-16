@@ -18,26 +18,26 @@ services:
         value: .onrender.com
       - key: DATABASE_URL
         fromDatabase:
-          name: cloud-project-1-db
+          name: cloud-project-1-postgres
           property: connectionString
       - key: MONGODB_URI
-        value: mongodb+srv://Namitha:NamiHarshu@866@cluster0.edzfz.mongodb.net/CloudProject?retryWrites=true&w=majority
+        sync: false
       - key: FIREBASE_API_KEY
-        value: AIzaSyDUEVU5icElBw_PR6xQ5XEXsy56vOL0H3g
+        sync: false
       - key: FIREBASE_AUTH_DOMAIN
-        value: cloud-project-1-27e81.firebaseapp.com
+        sync: false
       - key: FIREBASE_DATABASE_URL
-        value: https://cloudproject-bcd7008-default-rtdb.firebaseio.com
+        sync: false
       - key: FIREBASE_PROJECT_ID
-        value: cloud-project-1-27e81
+        sync: false
       - key: FIREBASE_STORAGE_BUCKET
-        value: cloud-project-1-27e81.appspot.com
+        sync: false
       - key: FIREBASE_MESSAGING_SENDER_ID
-        value: 850810687393
+        sync: false
       - key: FIREBASE_APP_ID
-        value: 1:850810687393:web:c3c448975108610c3345e0
+        sync: false
       - key: FIREBASE_MEASUREMENT_ID
-        value: G-Z40ZLL0MMJ
+        sync: false
       - key: SECURE_SSL_REDIRECT
         value: true
       - key: SESSION_COOKIE_SECURE
@@ -54,8 +54,8 @@ services:
     autoDeploy: true
     plan: free
 
-  - type: pserv
-    name: cloud-project-1-db
+  - type: postgres
+    name: cloud-project-1-postgres
     env: docker
     region: oregon
     plan: free
