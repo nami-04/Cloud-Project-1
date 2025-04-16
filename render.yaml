@@ -51,6 +51,6 @@ services:
     autoDeploy: true
     plan: free
 
-  - type: postgres
+  - type: pserv
     name: Cloud-Project-1-Database
     plan: free 
