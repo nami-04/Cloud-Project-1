@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: cloud-project-1
+    name: Cloud-Project-1
     env: python
     buildCommand: |
       pip install -r requirements.txt
@@ -51,7 +51,6 @@ services:
     autoDeploy: true
     plan: free
 
-  - type: postgres
-    name: cloud-project-1-database
-    plan: free
-    startCommand: postgres -D /var/lib/postgresql/data 
+  - type: pserv
+    name: Cloud-Project-1-Database
+    plan: free 
