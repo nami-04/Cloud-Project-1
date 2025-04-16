@@ -18,7 +18,7 @@ services:
         value: .onrender.com
       - key: DATABASE_URL
         fromDatabase:
-          name: cloud-project-1-database
+          name: cloud-project-1-db
           property: connectionString
       - key: MONGODB_URI
         value: mongodb+srv://Namitha:NamiHarshu@866@cluster0.edzfz.mongodb.net/CloudProject?retryWrites=true&w=majority
@@ -55,7 +55,7 @@ services:
     plan: free
 
   - type: pserv
-    name: cloud-project-1-database
+    name: cloud-project-1-db
     env: docker
     region: oregon
     plan: free
