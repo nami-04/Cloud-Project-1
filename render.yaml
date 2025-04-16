@@ -53,6 +53,6 @@ services:
 
   - type: pserv
     name: Cloud-Project-1-Database
-    env: postgres
+    env: docker
     startCommand: postgres -D /var/lib/postgresql/data
     plan: free 
