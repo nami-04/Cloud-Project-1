@@ -4,12 +4,13 @@ services:
     env: python
     region: oregon
     buildCommand: |
+      python -m pip install --upgrade pip
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
     startCommand: gunicorn webapp.wsgi:application
     envVars:
       - key: PYTHON_VERSION
-        value: 3.9.0
+        value: 3.11.0
       - key: DEBUG
         value: false
       - key: SECRET_KEY

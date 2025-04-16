@@ -1,41 +1,42 @@
-from django.shortcuts import render , HttpResponse
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from grpcheckerview import group_required , group_not_required
-from club import datahandler as dataconn
-from event import datahandler as eventdataconn
-from datetime import datetime
-from django.http import *
-import pytz
+from django.contrib import messages
+from django.http import HttpResponse, HttpResponseServerError, Http404
+from django.conf import settings
 import traceback
 import uuid
 from messagequeue import uploadQueueClub
 from student import datahandler as studata
+
+# Import data handlers after all other imports
+from event.datahandler import EventDataHandler
+from club.datahandler import ClubDataHandler
 
 tz = pytz.timezone('Asia/Kolkata')
 today = datetime.now(tz)
 
 
 # Create your views here.
-@login_required(login_url = '/user/login/')
+@login_required(login_url='/user/login/')
 @group_required("Clubgrp")
 def club(request):
     if request.method == 'POST':
         eventId = request.POST['Id']
         if request.POST['action'] == "stopregistration":
-            status = eventdataconn.stopRegistration(eventId,False)
+            status = eventdataconn.stopRegistration(eventId, False)
         elif request.POST['action'] == "startregistration":
-            status = eventdataconn.stopRegistration(eventId , True)
+            status = eventdataconn.stopRegistration(eventId, True)
         elif request.POST['action'] == "Deletion":
             status = eventdataconn.deleteEvent(eventId)
 
-    eventsforclub = eventdataconn.getLiveEventforClub(request.user.username , today)
-    context = {"events" : eventsforclub}
-    return render(request , 'clublanding.html' , context)
+    eventsforclub = eventdataconn.getLiveEventforClub(request.user.username, today)
+    context = {"events": eventsforclub}
+    return render(request, 'clublanding.html', context)
 
 
-@group_not_required("Clubgrp" , "Techgrp")
-def clubforid(request , id = 0):
-    if(id == 0):
+@group_not_required("Clubgrp", "Techgrp")
+def clubforid(request, id=0):
+    if (id == 0):
         raise Http404()
 
     if request.user.is_authenticated:
@@ -44,7 +45,7 @@ def clubforid(request , id = 0):
                 studentId = request.POST.get('studentId')
                 clubId = request.POST.get('clubId')
                 try:
-                    dataconn.addStudentSubscription(studentId = studentId , clubId=clubId)
+                    dataconn.addStudentSubscription(studentId=studentId, clubId=clubId)
                     stu = studata.getStudent(request.user.username)
                     uploadQueueClub(stu['studentEmail'])
                     print("Subscription successful")
@@ -55,12 +56,12 @@ def clubforid(request , id = 0):
                 studentId = request.POST.get('studentId')
                 clubId = request.POST.get('clubId')
                 try:
-                    dataconn.removeStudentSubscription(studentId = studentId , clubId=clubId)
+                    dataconn.removeStudentSubscription(studentId=studentId, clubId=clubId)
                     print("unsubscription successful")
                 except:
                     traceback.print_exc()
                     print("Error in adding unsubcription in view.py of club")
-    
+
     try:
         clubdata = dataconn.getClub(id)
         if clubdata is None:
@@ -70,24 +71,25 @@ def clubforid(request , id = 0):
 
         upcomingEvents = []
         pastEvents = []
-        upcomingEvents = eventdataconn.getLiveEventforClub(id,today)
-        pastEvents = eventdataconn.getPastEventforClub(id,today)
-        context = {"club" : clubdata , "upcoming" : upcomingEvents , "past" : pastEvents}
-        return render(request , 'club.html' , context)
+        upcomingEvents = eventdataconn.getLiveEventforClub(id, today)
+        pastEvents = eventdataconn.getPastEventforClub(id, today)
+        context = {"club": clubdata, "upcoming": upcomingEvents, "past": pastEvents}
+        return render(request, 'club.html', context)
     except:
         traceback.print_exc()
         print("error in loading club with id:" + id)
-    
+
     raise Http404
 
-@group_not_required("Clubgrp" , "Techgrp")
+
+@group_not_required("Clubgrp", "Techgrp")
 def allclubsloaded(request):
-    if request.user.is_authenticated: 
+    if request.user.is_authenticated:
         if request.method == 'POST':
             studentId = request.POST['studentId']
             clubId = request.POST['clubId']
             try:
-                dataconn.addStudentSubscription(studentId = studentId , clubId=clubId)
+                dataconn.addStudentSubscription(studentId=studentId, clubId=clubId)
                 stu = studata.getStudent(request.user.username)
                 uploadQueueClub(stu['studentEmail'])
             except:
@@ -97,14 +99,14 @@ def allclubsloaded(request):
     else:
         subscribedClub = {}
     allclubs = dataconn.getAllClub()
-    context = {"allclubs" : allclubs , "subscribed" : subscribedClub}
-    if(allclubs is None):
+    context = {"allclubs": allclubs, "subscribed": subscribedClub}
+    if (allclubs is None):
         return HttpResponse("Server Error")
 
-    return render(request , 'clubs.html' , context= context)
+    return render(request, 'clubs.html', context=context)
 
 
-@login_required(login_url = '/user/login/')
+@login_required(login_url='/user/login/')
 @group_required("Clubgrp")
 def createEvent(request):
     if request.method == 'POST':

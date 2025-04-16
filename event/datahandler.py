@@ -1,17 +1,19 @@
 from pymongo import MongoClient
-from event.models import Event
-from club.models import Club
-from student.models import Student
-from admintask.models import subscription
-from admintask.models import registration
-from student import datahandler as studata
-import traceback
 from django.conf import settings
+from django.db import models
+import traceback
 
+# Initialize MongoDB connection
 client = MongoClient(settings.MONGODB_URI)
 db = client.get_database("CloudProject")
 conn = db.Events
 
+# Import models after MongoDB initialization
+from event.models import Event
+from club.models import Club
+from student.models import Student
+from admintask.models import subscription, registration
+from student.datahandler import StudentDataHandler
 
 def createEvent(eventData):
     try:        
@@ -132,7 +134,7 @@ def getParticipant(id):
         student = []
         studentIds = registration.objects.all().filter(eventId= id).values_list('studentId', flat=True)
         for x in studentIds:
-            student.append(studata.getStudent(x))
+            student.append(StudentDataHandler.getStudent(x))
         return student
     except:
         traceback.print_exc()

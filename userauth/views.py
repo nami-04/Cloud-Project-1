@@ -1,13 +1,13 @@
-from django.shortcuts import render , HttpResponse , redirect
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User, Group
+from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
+from django.http import HttpResponse, HttpResponseServerError, Http404, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login , logout
-from student import datahandler as studata
-from club import datahandler as clubdata
-from django.http import *
 import traceback
 import pyrebase
-from django.conf import settings
 import os
 
 # Firebase configuration
@@ -19,6 +19,10 @@ try:
 except Exception as e:
     print(f"Firebase initialization error: {str(e)}")
     auth = None
+
+# Import data handlers after all other imports
+from student.datahandler import StudentDataHandler
+from club.datahandler import ClubDataHandler
 
 def loginuser(request):
     if request.user.is_authenticated:
