@@ -40,7 +40,11 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'corsheaders',
     'rest_framework',
-    'your_app_name',  # Replace with your actual app name
+    'userauth',
+    'student',
+    'event',
+    'club',
+    'admintask',
 ]
 
 MIDDLEWARE = [
