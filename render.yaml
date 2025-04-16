@@ -2,7 +2,7 @@ services:
   - type: web
     name: cloud-project-1
     env: python
-    region: singapore
+    region: oregon
     buildCommand: |
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
@@ -56,5 +56,7 @@ services:
 
   - type: pserv
     name: cloud-project-1-database
-    region: singapore
+    env: postgres
+    startCommand: postgres -D /var/lib/postgresql/data
+    region: oregon
     plan: free
