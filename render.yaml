@@ -16,20 +16,38 @@ services:
       - key: DATABASE_URL
         sync: false
       - key: MONGODB_URI
-        sync: false
+        value: mongodb+srv://Namitha:NamiHarshu@866@cluster0.edzfz.mongodb.net/CloudProject?retryWrites=true&w=majority
       - key: FIREBASE_API_KEY
-        sync: false
+        value: AIzaSyDUEVU5icElBw_PR6xQ5XEXsy56vOL0H3g
       - key: FIREBASE_AUTH_DOMAIN
-        sync: false
+        value: cloud-project-1-27e81.firebaseapp.com
       - key: FIREBASE_DATABASE_URL
-        sync: false
+        value: https://cloudproject-bcd7008-default-rtdb.firebaseio.com
       - key: FIREBASE_PROJECT_ID
-        sync: false
+        value: cloud-project-1-27e81
       - key: FIREBASE_STORAGE_BUCKET
-        sync: false
+        value: cloud-project-1-27e81.appspot.com
       - key: FIREBASE_MESSAGING_SENDER_ID
-        sync: false
+        value: 850810687393
       - key: FIREBASE_APP_ID
-        sync: false
+        value: 1:850810687393:web:c3c448975108610c3345e0
       - key: FIREBASE_MEASUREMENT_ID
-        sync: false 
+        value: G-Z40ZLL0MMJ
+      - key: SECURE_SSL_REDIRECT
+        value: True
+      - key: SESSION_COOKIE_SECURE
+        value: True
+      - key: CSRF_COOKIE_SECURE
+        value: True
+
+  - type: pserv
+    name: cloud-project-1-database
+    env: postgres
+    plan: free
+
+  - type: mongodb
+    name: cloud-project-1-mongodb
+    env: python
+    envVars:
+      - key: MONGODB_URI
+        value: mongodb+srv://Namitha:NamiHarshu@866@cluster0.edzfz.mongodb.net/CloudProject?retryWrites=true&w=majority 
