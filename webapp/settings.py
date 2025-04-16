@@ -88,21 +88,12 @@ WSGI_APPLICATION = 'webapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# Use PostgreSQL if DATABASE_URL is set, otherwise use SQLite
-if os.environ.get('DATABASE_URL'):
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
-            conn_max_age=600
-        )
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600
+    )
+}
 
 
 # Password validation
@@ -142,8 +133,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [ os.path.join(BASE_DIR , "static"),]
-STATIC_ROOT = os.path.join(BASE_DIR , "staticfiles")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
@@ -153,18 +144,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Firebase Configuration
 FIREBASE_CONFIG = {
-    "apiKey": os.environ.get('FIREBASE_API_KEY', "AIzaSyDUEVU5icElBw_PR6xQ5XEXsy56vOL0H3g"),
-    "authDomain": os.environ.get('FIREBASE_AUTH_DOMAIN', "cloud-project-1-27e81.firebaseapp.com"),
-    "databaseURL": os.environ.get('FIREBASE_DATABASE_URL', "https://cloudproject-bcd7008-default-rtdb.firebaseio.com"),
-    "projectId": os.environ.get('FIREBASE_PROJECT_ID', "cloud-project-1-27e81"),
-    "storageBucket": os.environ.get('FIREBASE_STORAGE_BUCKET', "cloud-project-1-27e81.appspot.com"),
-    "messagingSenderId": os.environ.get('FIREBASE_MESSAGING_SENDER_ID', "850810687393"),
-    "appId": os.environ.get('FIREBASE_APP_ID', "1:850810687393:web:c3c448975108610c3345e0"),
-    "measurementId": os.environ.get('FIREBASE_MEASUREMENT_ID', "G-Z40ZLL0MMJ")
+    "apiKey": os.environ.get('FIREBASE_API_KEY'),
+    "authDomain": os.environ.get('FIREBASE_AUTH_DOMAIN'),
+    "databaseURL": os.environ.get('FIREBASE_DATABASE_URL'),
+    "projectId": os.environ.get('FIREBASE_PROJECT_ID'),
+    "storageBucket": os.environ.get('FIREBASE_STORAGE_BUCKET'),
+    "messagingSenderId": os.environ.get('FIREBASE_MESSAGING_SENDER_ID'),
+    "appId": os.environ.get('FIREBASE_APP_ID'),
+    "measurementId": os.environ.get('FIREBASE_MEASUREMENT_ID')
 }
 
 # MongoDB Configuration
-MONGODB_URI = os.environ.get('MONGODB_URI', "mongodb+srv://Namitha:NamiHarshu%40866@cluster0.edzfz.mongodb.net/CloudProject?retryWrites=true&w=majority")
+MONGODB_URI = os.environ.get('MONGODB_URI')
 
 # Security Settings
 SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'True') == 'True'
