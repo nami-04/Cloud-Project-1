@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-$4^xbq9od)=m0=ra_7wk-=(@+g9mw4l(r1($+8h#8ayg_p#n4a')
@@ -48,17 +48,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'webapp.urls'
@@ -150,16 +152,30 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Firebase Configuration
 FIREBASE_CONFIG = {
-    "apiKey": "AIzaSyDUEVU5icElBw_PR6xQ5XEXsy56vOL0H3g",
-    "authDomain": "cloud-project-1-27e81.firebaseapp.com",
-    "databaseURL": "https://cloudproject-bcd7008-default-rtdb.firebaseio.com",
-    "projectId": "cloud-project-1-27e81",
-    "storageBucket": "cloud-project-1-27e81.appspot.com",
-    "messagingSenderId": "850810687393",
-    "appId": "1:850810687393:web:c3c448975108610c3345e0",
-    "measurementId": "G-Z40ZLL0MMJ"
+    "apiKey": os.environ.get('FIREBASE_API_KEY', "AIzaSyDUEVU5icElBw_PR6xQ5XEXsy56vOL0H3g"),
+    "authDomain": os.environ.get('FIREBASE_AUTH_DOMAIN', "cloud-project-1-27e81.firebaseapp.com"),
+    "databaseURL": os.environ.get('FIREBASE_DATABASE_URL', "https://cloudproject-bcd7008-default-rtdb.firebaseio.com"),
+    "projectId": os.environ.get('FIREBASE_PROJECT_ID', "cloud-project-1-27e81"),
+    "storageBucket": os.environ.get('FIREBASE_STORAGE_BUCKET', "cloud-project-1-27e81.appspot.com"),
+    "messagingSenderId": os.environ.get('FIREBASE_MESSAGING_SENDER_ID', "850810687393"),
+    "appId": os.environ.get('FIREBASE_APP_ID', "1:850810687393:web:c3c448975108610c3345e0"),
+    "measurementId": os.environ.get('FIREBASE_MEASUREMENT_ID', "G-Z40ZLL0MMJ")
 }
 
 # MongoDB Configuration
 MONGODB_URI = os.environ.get('MONGODB_URI', "mongodb+srv://Namitha:NamiHarshu%40866@cluster0.edzfz.mongodb.net/CloudProject?retryWrites=true&w=majority")
+
+# Security Settings
+SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'True') == 'True'
+SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'True') == 'True'
+CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE', 'True') == 'True'
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Set CSRF_TRUSTED_ORIGINS for Render
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
+
+# CORS Settings
+CORS_ALLOW_ALL_ORIGINS = True  # For development only, configure properly for production
 

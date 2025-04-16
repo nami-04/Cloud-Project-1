@@ -3,13 +3,33 @@ services:
     name: cloud-project-1
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn webapp.wsgi:application
+    startCommand: python manage.py migrate && python manage.py collectstatic --noinput && gunicorn webapp.wsgi:application
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0
-      - key: DJANGO_SETTINGS_MODULE
-        value: webapp.settings
+      - key: DEBUG
+        value: False
       - key: SECRET_KEY
         generateValue: true
-      - key: DEBUG
-        value: False 
+      - key: ALLOWED_HOSTS
+        value: .onrender.com
+      - key: DATABASE_URL
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: FIREBASE_API_KEY
+        sync: false
+      - key: FIREBASE_AUTH_DOMAIN
+        sync: false
+      - key: FIREBASE_DATABASE_URL
+        sync: false
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: FIREBASE_STORAGE_BUCKET
+        sync: false
+      - key: FIREBASE_MESSAGING_SENDER_ID
+        sync: false
+      - key: FIREBASE_APP_ID
+        sync: false
+      - key: FIREBASE_MEASUREMENT_ID
+        sync: false 
