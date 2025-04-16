@@ -54,11 +54,4 @@ services:
   - type: pserv
     name: cloud-project-1-database
     env: postgres
-    plan: free
-
-  - type: mongodb
-    name: cloud-project-1-mongodb
-    env: python
-    envVars:
-      - key: MONGODB_URI
-        value: mongodb+srv://Namitha:NamiHarshu@866@cluster0.edzfz.mongodb.net/CloudProject?retryWrites=true&w=majority 
+    plan: free 
