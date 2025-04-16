@@ -2,8 +2,10 @@ services:
   - type: web
     name: cloud-project-1
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python manage.py migrate && python manage.py collectstatic --noinput && gunicorn webapp.wsgi:application
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn webapp.wsgi:application
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0
@@ -39,6 +41,15 @@ services:
         value: True
       - key: CSRF_COOKIE_SECURE
         value: True
+      - key: STATIC_ROOT
+        value: /opt/render/project/src/staticfiles
+      - key: STATIC_URL
+        value: /static/
+      - key: STATICFILES_STORAGE
+        value: whitenoise.storage.CompressedManifestStaticFilesStorage
+    healthCheckPath: /
+    autoDeploy: true
+    plan: free
 
   - type: pserv
     name: cloud-project-1-database
