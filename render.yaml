@@ -1,7 +1,8 @@
 services:
   - type: web
-    name: Cloud-Project-1
+    name: cloud-project-1
     env: python
+    region: singapore  # Closest to India
     buildCommand: |
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
@@ -10,37 +11,39 @@ services:
       - key: PYTHON_VERSION
         value: 3.9.0
       - key: DEBUG
-        value: False
+        value: false
       - key: SECRET_KEY
         generateValue: true
       - key: ALLOWED_HOSTS
         value: .onrender.com
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: cloud-project-1-db
+          property: connectionString
       - key: MONGODB_URI
-        value: mongodb+srv://Namitha:NamiHarshu@866@cluster0.edzfz.mongodb.net/CloudProject?retryWrites=true&w=majority
+        sync: false  # Set this in Render dashboard
       - key: FIREBASE_API_KEY
-        value: AIzaSyDUEVU5icElBw_PR6xQ5XEXsy56vOL0H3g
+        sync: false  # Set this in Render dashboard
       - key: FIREBASE_AUTH_DOMAIN
-        value: cloud-project-1-27e81.firebaseapp.com
+        sync: false  # Set this in Render dashboard
       - key: FIREBASE_DATABASE_URL
-        value: https://cloudproject-bcd7008-default-rtdb.firebaseio.com
+        sync: false  # Set this in Render dashboard
       - key: FIREBASE_PROJECT_ID
-        value: cloud-project-1-27e81
+        sync: false  # Set this in Render dashboard
       - key: FIREBASE_STORAGE_BUCKET
-        value: cloud-project-1-27e81.appspot.com
+        sync: false  # Set this in Render dashboard
       - key: FIREBASE_MESSAGING_SENDER_ID
-        value: 850810687393
+        sync: false  # Set this in Render dashboard
       - key: FIREBASE_APP_ID
-        value: 1:850810687393:web:c3c448975108610c3345e0
+        sync: false  # Set this in Render dashboard
       - key: FIREBASE_MEASUREMENT_ID
-        value: G-Z40ZLL0MMJ
+        sync: false  # Set this in Render dashboard
       - key: SECURE_SSL_REDIRECT
-        value: True
+        value: true
       - key: SESSION_COOKIE_SECURE
-        value: True
+        value: true
       - key: CSRF_COOKIE_SECURE
-        value: True
+        value: true
       - key: STATIC_ROOT
         value: /opt/render/project/src/staticfiles
       - key: STATIC_URL
@@ -51,6 +54,8 @@ services:
     autoDeploy: true
     plan: free
 
-  - type: pserv
-    name: Cloud-Project-1-Database
-    plan: free 
+  - type: postgres
+    name: cloud-project-1-db
+    region: singapore
+    plan: free
+    ipAllowList: []  # only allow internal connections
